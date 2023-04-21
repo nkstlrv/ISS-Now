@@ -1,0 +1,15 @@
+{% extends 'iss_app/base.html' %}
+
+{% block title %}Map{% endblock title %}
+
+{% block content %}
+{#    <head><meta http-equiv="refresh" content="10"></head>#}
+
+<div style="margin: 10px 40px 40px;">
+    <h1>Map Page</h1>
+    <div style="padding: 10px; height: 800px; width: 800px;">
+    {{ map | safe }}
+        </div>
+</div>
+
+{%  endblock content %}rg
