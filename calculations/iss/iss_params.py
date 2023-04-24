@@ -14,8 +14,6 @@ def iss_data():
         'alt': req["altitude"],
         'vel_kph': int(req["velocity"]),
         'vel_mps': round((int(req["velocity"]) / 3.6), 2),
-        'vis': req["visibility"],
-        'daynum': req["daynum"],
 
     }
 
