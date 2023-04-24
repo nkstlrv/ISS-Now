@@ -1,28 +1,51 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
 import folium
 
-from calculations.iss.iss_params import ISS
-from calculations.iss.people_on_board import PeopleISS
+from calculations.iss import iss_params, people_on_board
 
 
 def home_view(request):
     return render(request, "iss_app/index.html", {})
 
 
+@require_GET
 def map_view(request):
-    iss = ISS()
-    data = iss.iss_data()
+    if 'refresh' in request.GET:
 
-    coordinates = (data['lat'], data['lon'])
+        data = iss_params.iss_data()
+        lat = float(data['lat'])
+        lon = float(data['lon'])
 
-    m = folium.Map(location=[coordinates[0], coordinates[1]], zoom_start=3)
+        updating_map = folium.Map(location=[lat, lon], zoom_start=3)
 
-    iss_icon = folium.features.CustomIcon('iss_app/static/images/space-station.png', icon_size=(40, 40))
-    folium.Marker(coordinates, tooltip='ISS', popup='International Space Station', icon=iss_icon).add_to(m)
+        iss_icon = folium.features.CustomIcon('iss_app/static/images/space-station.png', icon_size=(40, 40))
+        folium.Marker((lat, lon), tooltip='ISS', popup='International Space Station', icon=iss_icon).add_to(
+            updating_map)
+        # folium.CircleMarker(location=(data['lat'], data['lon']), radius=30, fill_color='gray').add_to(updating_map)
 
-    folium.CircleMarker(location=(data['lat'], data['lon']), radius=30, fill_color='blue').add_to(m)
+        context = {
+            'map': updating_map._repr_html_(),
+        }
 
-    context = {'map': m._repr_html_()}
+        return JsonResponse(context)
 
-    return render(request, 'iss_app/map.html', context)
+    else:
+
+        data = iss_params.iss_data()
+        lat = float(data['lat'])
+        lon = float(data['lon'])
+
+        initial_map = folium.Map(location=[lat, lon], zoom_start=3)
+
+        iss_icon = folium.features.CustomIcon('iss_app/static/images/space-station.png', icon_size=(40, 40))
+        folium.Marker((lat, lon), tooltip='ISS', popup='International Space Station', icon=iss_icon).add_to(
+            initial_map)
+        # folium.CircleMarker(location=(data['lat'], data['lon']), radius=30, fill_color='gray').add_to(initial_map)
+
+        context = {
+            'map': initial_map._repr_html_()
+        }
+
+        return render(request, 'iss_app/map.html', context)

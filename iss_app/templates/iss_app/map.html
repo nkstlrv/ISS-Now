@@ -3,13 +3,45 @@
 {% block title %}Map{% endblock title %}
 
 {% block content %}
-{#    <head><meta http-equiv="refresh" content="10"></head>#}
+    <div class="container" style="display: flex; flex-wrap: wrap">
+        <div class="box" style="flex: 1 1 50%; max-width: 50%; margin: 10px;">
+            <div style=" position: fixed;
+    margin-bottom: 200px;
+    width: 60%;
+    height:60%;
+    top: 30%;
+    bottom: 30%;
+    left: 20%;
+    transform: translate(-20%, -20%);
+  " id="map-container">{{ map|safe }}</div>
 
-<div style="margin: 10px 40px 40px;">
-    <h1>Map Page</h1>
-    <div style="padding: 10px; height: 800px; width: 800px;">
-    {{ map | safe }}
+            <script>
+                function refreshMap() {
+                    // make a GET request to the map_view view with the 'refresh' parameter
+                    fetch('/map/?refresh=true')
+                        .then(response => response.json())
+                        .then(data => {
+                            // update the map HTML in the map container
+                            document.getElementById('map-container').innerHTML = data.map;
+                        });
+                }
+
+                // refresh the map every 5 seconds
+                setInterval(refreshMap, 5000);
+            </script>
         </div>
-</div>
-
-{%  endblock content %}rg
+    </div>
+    <div class="box" style="float: right;
+    width: 300px;
+    height: 200px;
+    margin: 30px;">
+        <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+            <div class="card-header">Header</div>
+            <div class="card-body">
+                <h5 class="card-title">Dark card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
