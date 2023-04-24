@@ -29,18 +29,6 @@ def map_view(request):
         'pob': people_on_board.people_iss()['people']
     }
 
-    user_ip = request.META.get('HTTP_X_FORWARDED_FOR')
-    if user_ip:
-        ip = user_ip.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-
-    print(ip)
-    g = geocoder.ip(ip)
-    print(g)
-
-    coordinates = g.latlng
-
     if 'refresh' in request.GET:
 
         updating_map = folium.Map(location=[lat, lon], zoom_start=5)
@@ -50,8 +38,6 @@ def map_view(request):
             updating_map)
 
         plugins.Terminator().add_to(updating_map)
-
-        folium.Marker((coordinates[0], coordinates[1]), tooltip='Me', popup='Your location', icon='home').add_to(updating_map)
 
         context = {
             'map': updating_map._repr_html_(),
@@ -69,9 +55,6 @@ def map_view(request):
             initial_map)
 
         plugins.Terminator().add_to(initial_map)
-        # folium.CircleMarker(location=(data['lat'], data['lon']), radius=30, fill_color='gray').add_to(initial_map)
-
-        folium.Marker((coordinates[0], coordinates[1]), tooltip='Me', popup='Your location', icon='home').add_to(initial_map)
 
         context = {
             'map': initial_map._repr_html_(),
@@ -79,3 +62,7 @@ def map_view(request):
         }
 
         return render(request, 'iss_app/map.html', context)
+
+
+def map_google(request):
+    return render(request, 'iss_app/map_google.html')
