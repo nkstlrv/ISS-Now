@@ -13,10 +13,8 @@ def iss_data():
 
     if req['visibility'] == 'daylight':
         iss_daytime['value'] = 'Day ☀️'
-    elif req['visibility'] == 'daynight':
-        iss_daytime['value'] = 'Night 🌛'
     elif req['visibility'] == 'eclipsed':
-        iss_daytime['value'] = 'ISS on eclipse 🌅'
+        iss_daytime['value'] = 'Night 🌛'
     else:
         iss_daytime['value'] = 'No Data'
 
