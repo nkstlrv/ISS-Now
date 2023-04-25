@@ -29,20 +29,20 @@ def map_view(request):
         'pob': people_on_board.people_iss()['people']
     }
 
-    updating_map = folium.Map(location=[lat, lon], zoom_start=5)
+    m = folium.Map(location=[lat, lon], zoom_start=5)
 
     iss_icon = folium.features.CustomIcon('iss_app/static/images/space-station.png', icon_size=(40, 40))
     folium.Marker((lat, lon), tooltip='ISS', popup='International Space Station', icon=iss_icon).add_to(
-        updating_map)
+        m)
 
-    plugins.Terminator().add_to(updating_map)
+    plugins.Terminator().add_to(m)
 
     context = {
-        'map': updating_map._repr_html_(),
+        'map': m._repr_html_(),
         'data': table_data
     }
 
-
     return render(request, 'iss_app/map.html', context)
+
 
 
