@@ -29,40 +29,20 @@ def map_view(request):
         'pob': people_on_board.people_iss()['people']
     }
 
-    if 'refresh' in request.GET:
+    updating_map = folium.Map(location=[lat, lon], zoom_start=5)
 
-        updating_map = folium.Map(location=[lat, lon], zoom_start=5)
+    iss_icon = folium.features.CustomIcon('iss_app/static/images/space-station.png', icon_size=(40, 40))
+    folium.Marker((lat, lon), tooltip='ISS', popup='International Space Station', icon=iss_icon).add_to(
+        updating_map)
 
-        iss_icon = folium.features.CustomIcon('iss_app/static/images/space-station.png', icon_size=(40, 40))
-        folium.Marker((lat, lon), tooltip='ISS', popup='International Space Station', icon=iss_icon).add_to(
-            updating_map)
+    plugins.Terminator().add_to(updating_map)
 
-        plugins.Terminator().add_to(updating_map)
-
-        context = {
-            'map': updating_map._repr_html_(),
-            'data': table_data
-        }
-
-        return JsonResponse(context)
-
-    else:
-
-        initial_map = folium.Map(location=[lat, lon], zoom_start=5)
-
-        iss_icon = folium.features.CustomIcon('iss_app/static/images/space-station.png', icon_size=(40, 40))
-        folium.Marker((lat, lon), tooltip='ISS', popup='International Space Station', icon=iss_icon).add_to(
-            initial_map)
-
-        plugins.Terminator().add_to(initial_map)
-
-        context = {
-            'map': initial_map._repr_html_(),
-            'data': table_data
-        }
-
-        return render(request, 'iss_app/map.html', context)
+    context = {
+        'map': updating_map._repr_html_(),
+        'data': table_data
+    }
 
 
-def map_google(request):
-    return render(request, 'iss_app/map_google.html')
+    return render(request, 'iss_app/map.html', context)
+
+

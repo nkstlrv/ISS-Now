@@ -10,20 +10,19 @@
             <div class="p-2 w-100 bd-highlight">
                 <div style="width: 900px" id="map-container">{{ map|safe }}</div>
 
-                <script>
-                    function refreshMap() {
-                        // make a GET request to the map_view view with the 'refresh' parameter
-                        fetch('/map/?refresh=true')
-                            .then(response => response.json())
-                            .then(data => {
-                                // update the map HTML in the map container
-                                document.getElementById('map-container').innerHTML = data.map;
-                            });
-                    }
-
-                    // refresh the map every 5 seconds
-                    setInterval(refreshMap, 5000);
-                </script>
+{#                <script>#}
+{#                    function refreshMap() {#}
+{#                        // make a GET request to the map_view view with the 'refresh' parameter#}
+{#                        fetch('/map/?refresh=true')#}
+{#                            .then(response => response.json())#}
+{#                            .then(data => {#}
+{#                                // update the map HTML in the map container#}
+{#                                document.getElementById('map-container').innerHTML = data.map;#}
+{#                            });#}
+{#                    }#}
+{##}
+{#                    setInterval(refreshMap, 60000);#}
+{#                </script>#}
             </div>
 
 
