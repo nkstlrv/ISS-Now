@@ -1,13 +1,13 @@
 from django.shortcuts import render
-from django.http import JsonResponse
-from django.views.decorators.http import require_GET
+from django.views.generic import CreateView, UpdateView
+from django.urls import reverse_lazy
 import folium
 from folium import plugins
-import requests
-import geocoder
 from django.contrib.auth.decorators import login_required
 
 from calculations.iss import iss_params, people_on_board
+from .forms import LocationForm
+from .models import Location
 
 
 def home_view(request):
@@ -45,4 +45,15 @@ def map_view(request):
     return render(request, 'iss_app/map.html', context)
 
 
+class SetLocationView(CreateView):
+    form_class = LocationForm
+    model = Location
+    template_name = 'iss_app/location_set.html'
+    success_url = reverse_lazy('map')
 
+
+class ChangeLocationView(UpdateView):
+    model = Location
+    fields = ('city', 'country')
+    template_name = 'iss_app/change_location.html'
+    success_url = reverse_lazy('map')
