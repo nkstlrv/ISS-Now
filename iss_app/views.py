@@ -29,7 +29,8 @@ def map_view(request):
         'alt': round(data['alt'], 2),
         'vel_kph': data['vel_kph'],
         'vel_mps': data['vel_mps'],
-        'pob': people_on_board.people_iss()['people']
+        'pob': people_on_board.people_iss()['people'],
+        'day_night': data['day_night'],
     }
 
     current_user = request.user.id
@@ -54,14 +55,20 @@ def map_view(request):
     folium.Marker((lat, lon), tooltip='ISS', popup='International Space Station', icon=iss_icon).add_to(m)
 
     if user_lat and user_lon:
+
+        dist_km = round((distance.great_circle((lat, lon), (user_lat, user_lon)).km), 2)
+        print(dist_km)
+
         folium.Marker((user_lat, user_lon), tooltip='Your Location').add_to(m)
+
         folium.PolyLine(locations=[[lat, lon], [user_lat, user_lon]],
                         color='gray',
                         dash_array='5, 10',
-                        weight=3).add_to(m)
+                        weight=3,
+                        tooltip=f"{dist_km} km").add_to(m)
 
-        dist_km = round((distance.distance((lat, lon), (user_lat, user_lon)).km), 2)
-        print(dist_km)
+        table_data['dist'] = dist_km
+
     else:
         print('No Marker')
 
