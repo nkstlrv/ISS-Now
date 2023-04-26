@@ -3,6 +3,8 @@
 {% block title %}{% endblock title %}
 
 {% block content %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.min.js"></script>
 
     <div class="d-flex flex-row" style="margin: 10px">
 
@@ -25,23 +27,23 @@
 
                 <div class="card-body">
 
-                    <table class="table table-dark">
+                    <table class="table table-dark" id="data-table">
                         <tbody>
 
                         <tr>
                             <th scope="row">Coordinates</th>
-                            <td>### | ###</td>
+                            <td id="latlon">{{ lat }}, {{ lon }}</td>
                         </tr>
 
 
                         <tr>
                             <th scope="row">Altitude</th>
-                            <td>###</td>
+                            <td id="alt">{{ alt }} km</td>
                         </tr>
 
                         <tr>
                             <th scope="row">Velocity</th>
-                            <td>###</td>
+                            <td id="vel">{{ vel }} km/s</td>
                         </tr>
 
                         </tbody>
@@ -58,7 +60,43 @@
                 </div>
             </div>
         </div>
+    </div>
 
+<script>
+$(document).ready(function() {
+  // Define a function to update the table with new data
+  function updateTable(data) {
+    var latlon = data.lat + ", " + data.lon;
+    var alt = data.alt + " km"
+    $('#latlon').text(latlon);
+    $('#alt').text(alt);
+    $('#velocity').text(velocity);
+  }
 
+  // Call the updateTable function with initial data
+  $.ajax({
+    url: '/data-view/',
+    success: function(data) {
+      updateTable(data);
+    }
+  });
+
+  // Set up a WebSocket connection to receive new data
+  var socket = io();
+  socket.on('data', function(data) {
+    updateTable(data);
+  });
+
+  // Update the table every 5 seconds
+  setInterval(function() {
+    $.ajax({
+      url: '/data-view/',
+      success: function(data) {
+        updateTable(data);
+      }
+    });
+  }, 5000);
+});
+</script>
 
 {% endblock content %}

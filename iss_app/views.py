@@ -13,6 +13,8 @@ from .models import Location
 from geopy.geocoders import Nominatim
 from geopy import distance
 
+iss_data = iss_params.iss_data()
+
 
 def home_view(request):
     return render(request, "iss_app/index.html")
@@ -20,7 +22,6 @@ def home_view(request):
 
 @login_required(login_url="/auth/login/")
 def map_view(request):
-    iss_data = iss_params.iss_data()
     lat = iss_data['lat']
     lon = iss_data['lon']
     print(lat, lon)
@@ -99,18 +100,50 @@ class ChangeLocationView(UpdateView):
 
 
 def live_cam_view(request):
-
     iss_data = iss_params.iss_data()
 
-    vel_kps = iss_data['vel_mps'] / 1000
+    lat = round(iss_data['lat'], 3)
+    lon = round(iss_data['lon'], 3)
 
-    data = {
+    if lat < 0:
+        lat = f"{lat}° S"
+    else:
+        lat = f"{lat}° N"
 
-        'lat': iss_data['lat'],
-        'lon': iss_data['lon'],
-        'vel': round(vel_kps, 3),
-        'alt': iss_data['alt']
+    if lon < 0:
+        lon = f"{lon}° W"
+    else:
+        lon = f"{lon}° E"
 
-    }
+    vel_kps = round((iss_data['vel_mps'] / 1000), 3)
 
-    return render(request, 'iss_app/live-iss-cam.html', data)
+    return render(request, 'iss_app/live-iss-cam.html', {'lat': lat,
+                                                         'lon': lon,
+                                                         'vel': vel_kps,
+                                                         'alt': round(iss_data['alt'], 3)
+                                                         })
+
+
+def data_view(request):
+    iss_data = iss_params.iss_data()
+
+    lat = round(iss_data['lat'], 3)
+    lon = round(iss_data['lon'], 3)
+
+    if lat < 0:
+        lat = f"{lat}° S"
+    else:
+        lat = f"{lat}° N"
+
+    if lon < 0:
+        lon = f"{lon}° W"
+    else:
+        lon = f"{lon}° E"
+
+    vel_kps = round((iss_data['vel_mps'] / 1000), 3)
+
+    return JsonResponse({'lat': lat,
+                         'lon': lon,
+                         'vel': vel_kps,
+                         'alt': round(iss_data['alt'], 3)
+                         })
