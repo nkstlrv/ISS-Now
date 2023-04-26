@@ -1,0 +1,28 @@
+{% extends 'iss_app/base.html' %}
+
+{% block content %}
+    <div id="map">{{ map|safe }}</div>
+    <script>
+        function updateISSMarker() {
+            $.ajax({
+                url: '/get_iss_coordinates/',
+                dataType: 'json',
+                success: function (data) {
+                    // Extract the new latitude and longitude from the JSON response
+                    var issLat = data.latitude;
+                    var issLng = data.longitude;
+
+                    // Remove the old marker from the map
+                    issMarker.remove();
+
+                    // Add a new marker for the ISS at the updated coordinates
+                    issMarker = L.marker([issLat, issLng]).addTo(map);
+
+                    // Call this function again after 5 seconds
+                    setTimeout(updateISSMarker, 5000);
+                }
+            });
+        }
+
+    </script>
+{% endblock %}

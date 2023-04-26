@@ -8,4 +8,5 @@ urlpatterns = [
     path("map/", map_view, name='map'),
     path("set-location/", login_required(SetLocationView.as_view()), name='set-location'),
     path("change-location/<int:pk>/", login_required(ChangeLocationView.as_view()), name='change-location'),
+
 ]

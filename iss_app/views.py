@@ -1,3 +1,5 @@
+import requests
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import CreateView, UpdateView
 from django.urls import reverse_lazy
@@ -94,3 +96,4 @@ class ChangeLocationView(UpdateView):
     fields = ('city', 'country')
     template_name = 'iss_app/change_location.html'
     success_url = reverse_lazy('map')
+
