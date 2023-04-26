@@ -13,15 +13,40 @@ from .models import Location
 from geopy.geocoders import Nominatim
 from geopy import distance
 
-iss_data = iss_params.iss_data()
-
 
 def home_view(request):
     return render(request, "iss_app/index.html")
 
 
+def data_view(request):
+    iss_data = iss_params.iss_data()
+
+    lat = round(iss_data['lat'], 3)
+    lon = round(iss_data['lon'], 3)
+
+    if lat < 0:
+        lat = f"{lat}° S"
+    else:
+        lat = f"{lat}° N"
+
+    if lon < 0:
+        lon = f"{lon}° W"
+    else:
+        lon = f"{lon}° E"
+
+    vel_kps = round((iss_data['vel_mps'] / 1000), 3)
+
+    return JsonResponse({'lat': lat,
+                         'lon': lon,
+                         'vel': vel_kps,
+                         'alt': round(iss_data['alt'], 3)
+                         })
+
+
 @login_required(login_url="/auth/login/")
 def map_view(request):
+    iss_data = iss_params.iss_data()
+
     lat = iss_data['lat']
     lon = iss_data['lon']
     print(lat, lon)
@@ -99,7 +124,7 @@ class ChangeLocationView(UpdateView):
     success_url = reverse_lazy('map')
 
 
-def live_cam_view(request):
+def earth_cam_view(request):
     iss_data = iss_params.iss_data()
 
     lat = round(iss_data['lat'], 3)
@@ -117,14 +142,14 @@ def live_cam_view(request):
 
     vel_kps = round((iss_data['vel_mps'] / 1000), 3)
 
-    return render(request, 'iss_app/live-iss-cam.html', {'lat': lat,
-                                                         'lon': lon,
-                                                         'vel': vel_kps,
-                                                         'alt': round(iss_data['alt'], 3)
-                                                         })
+    return render(request, 'iss_app/earth-cam.html', {'lat': lat,
+                                                      'lon': lon,
+                                                      'vel': vel_kps,
+                                                      'alt': round(iss_data['alt'], 3)
+                                                      })
 
 
-def data_view(request):
+def station_cam_view(request):
     iss_data = iss_params.iss_data()
 
     lat = round(iss_data['lat'], 3)
@@ -142,8 +167,8 @@ def data_view(request):
 
     vel_kps = round((iss_data['vel_mps'] / 1000), 3)
 
-    return JsonResponse({'lat': lat,
-                         'lon': lon,
-                         'vel': vel_kps,
-                         'alt': round(iss_data['alt'], 3)
-                         })
+    return render(request, 'iss_app/station-cam.html', {'lat': lat,
+                                                        'lon': lon,
+                                                        'vel': vel_kps,
+                                                        'alt': round(iss_data['alt'], 3)
+                                                        })
