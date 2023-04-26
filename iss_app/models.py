@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Location(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True, related_name='location')
     city = models.CharField(blank=False, null=False, max_length=200)
     country = models.CharField(blank=False, null=False, max_length=200)
 

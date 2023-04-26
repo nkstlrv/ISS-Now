@@ -1,11 +1,14 @@
 {% extends 'iss_app/base.html' %}
 
-{% block title %}Live Map{% endblock title %}
+{% block title %}Map{% endblock title %}
 
 {% block content %}
-
+    {% load static %}
     <head>
+
         <meta http-equiv="refresh" content="60">
+        <link rel="stylesheet" href={% static 'css/map.css' %}>
+
     </head>
 
     {% if data.dist %}
@@ -19,134 +22,127 @@
         {% endif %}
     {% endif %}
 
+    <div class="main-div">
+        <div class="flex-container">
 
-    <div style="display: flex; justify-content: center; align-items: center; height: 100vh">
-        <div style="margin: 20px">
-            <div class="d-flex bd-highlight">
-
-                <div style="width: 960px">
-                    <div class="p-2 w-100 bd-highlight">
-                        <div style=";
-                        position: relative;
-                        width: 100%;
-                        height: 100%;
-                        display: flex;
-                        flex-direction: column;"
-                             id="map-container">{{ map|safe }}
-                        </div>
-                    </div>
-
+            <div class="map">
+                <div id="map-object">
+                    {{ map|safe }}
                 </div>
+            </div>
 
 
-                <div class="p-2 flex-shrink-1 bd-highlight" style="margin-left: 10px">
+            <div class="card text-white bg-dark mb-3" style="max-width: 20rem;">
+                <div class="card-header"><h5>Live Parameters</h5></div>
+                <div class="card-body">
 
-                    <div class="card text-white bg-dark mb-3" style="max-width: 50rem; width: 300px">
-                        <div class="card-header" style="text-align: center; color: steelblue"><h5>Live Parameters</h5>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-dark">
-                                <thead>
-                                <tr>
-                                    <th scope="col">Parameter</th>
-                                    <th scope="col">Value</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th scope="row">Coordinates</th>
-                                    <td>lat: {{ data.lat }}° <br> lon: {{ data.lon }}°</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Altitude</th>
-                                    <td>{{ data.alt }} km</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Velocity</th>
-                                    <td>{{ data.vel_mps }} m/s <br> {{ data.vel_kph }} kph</td>
-                                </tr>
-                                {% if data.dist %}
-                                    {% if data.dist <= 600 %}
-                                        <tr>
-                                            <th scope="row">Distance</th>
-                                            <td style="color: green; animation: blinker 1s linear infinite;">
-                                                {{ data.dist }} km
-                                            </td>
-                                            <style>
-                                                @keyframes blinker {
-                                                    50% {
-                                                        opacity: 0;
-                                                    }
-                                                }
-                                            </style>
-                                        </tr>
-                                    {% else %}
-                                        <tr>
-                                            <th scope="row">Distance</th>
-                                            <td>
-                                                {{ data.dist }} km
-                                            </td>
+                    <table class="table table-dark" id="data-table">
+                        <tbody>
 
-                                        </tr>
-                                    {% endif %}
-                                {% endif %}
-                                <tr>
-                                    <th scope="row">Daytime</th>
-                                    <td>{{ data.day_night }}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">People on board</th>
-                                    <td>{{ data.pob|length }}</td>
-                                </tr>
-                            </table>
+                        <tr>
+                            <th scope="row">Coordinates</th>
+                            <td id="latlon">{{ data.lat }}, {{ data.lon }}</td>
+                        </tr>
+
+
+                        <tr>
+                            <th scope="row">Altitude</th>
+                            <td id="alt">{{ data.alt }} km</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Velocity</th>
+                            <td id="vel_mps">{{ data.vel_mps }} m/s</td>
+                        </tr>
+
+                        {% if data.dist %}
+
+                            <tr>
+                                <th scope="row">Distance</th>
+                                <td id="dist">{{ data.dist }} km</td>
+                            </tr>
+
+                        {% endif %}
+
+                        <tr>
+                            <th scope="row">Daytime</th>
+                            <td id="vel_mps">{{ data.day_night }}</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Crew</th>
+                            <td id="vel_mps">{{ data.pob|length }} people</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div style="text-align: center">
+                        <h6>Notify on flyovers</h6>
+                        <div style="margin-top: 2px">
+                            <button type="button" class="btn btn-outline-light" style="margin-right: 10px">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                     fill="currentColor"
+                                     class="bi bi-envelope" viewBox="0 0 16 16">
+                                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"></path>
+                                </svg>
+                                by Mail
+                            </button>
+                            <button type="button" class="btn btn-outline-info">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                     fill="currentColor"
+                                     class="bi bi-telegram" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z"></path>
+                                </svg>
+                                in Telegram
+                            </button>
                         </div>
                     </div>
 
-                    <div class="card text-white bg-dark mb-3" style="max-width: 35rem;">
-                        <div class="card-body" style="padding-bottom: 10px">
+                    <hr>
 
-                            <div><a href="{% url "set-location" %}" style="text-decoration: none; margin-right: 0px">
-                                <button type="button"
-                                        class="btn btn-outline-success">
-                                    Set Location
-                                </button>
-                            </a>
-                                <a href="{% url "change-location" user.pk %}" style="text-decoration: none">
-                                    <button type="button"
-                                            class="btn btn-outline-success">
+                    <div>
+
+                        <div class="location">
+
+                            {% if data.user_loc %}
+
+                                <a href="{% url 'change-location' user.pk %}">
+                                    <button type="button" class="btn btn-success">
                                         Change Location
                                     </button>
                                 </a>
-                            </div>
-                            <hr>
-                            <div style="text-align: center">
-                                <h6 style="color: steelblue">Notify on flyovers</h6>
-                                <div style="margin-top: 2px">
-                                    <button type="button" class="btn btn-outline-light" style="margin-right: 10px">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                             fill="currentColor"
-                                             class="bi bi-envelope" viewBox="0 0 16 16">
-                                            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"></path>
-                                        </svg>
-                                        by Mail
+                            {% else %}
+                                <a href="{% url 'set-location' %}" style="text-decoration: none">
+                                    <button type="button" class="btn btn-success" style="margin-right: 10px">
+                                        Set Location
                                     </button>
-                                    <button type="button" class="btn btn-outline-info">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                             fill="currentColor"
-                                             class="bi bi-telegram" viewBox="0 0 16 16">
-                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z"></path>
-                                        </svg>
-                                        in Telegram
-                                    </button>
-                                </div>
-                            </div>
+                                </a>
+                            {% endif %}
+
+
                         </div>
                     </div>
+
                 </div>
             </div>
+
         </div>
     </div>
 
 
 
 {% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+

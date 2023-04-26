@@ -34,12 +34,15 @@ def data_view(request):
     else:
         lon = f"{lon}° E"
 
-    vel_kps = round((iss_data['vel_mps'] / 1000), 3)
-
+    vel_kps = round((iss_data['vel_mps'] / 1000), 2)
     return JsonResponse({'lat': lat,
                          'lon': lon,
-                         'vel': vel_kps,
-                         'alt': round(iss_data['alt'], 3)
+                         'alt': round(iss_data['alt'], 1),
+                         'vel_kph': iss_data['vel_kph'],
+                         'vel_mps': iss_data['vel_mps'],
+                         'vel_kps': vel_kps,
+                         'pob': people_on_board.people_iss()['people'],
+                         'day_night': iss_data['day_night'],
                          })
 
 
@@ -47,28 +50,46 @@ def data_view(request):
 def map_view(request):
     iss_data = iss_params.iss_data()
 
-    lat = iss_data['lat']
-    lon = iss_data['lon']
-    print(lat, lon)
+    lat = round(iss_data['lat'], 3)
+    lon = round(iss_data['lon'], 3)
+
+    if lat < 0:
+        lat = f"{lat}° S"
+    else:
+        lat = f"{lat}° N"
+
+    if lon < 0:
+        lon = f"{lon}° W"
+    else:
+        lon = f"{lon}° E"
 
     table_data = {
-        'lat': round(iss_data['lat'], 2),
-        'lon': round(iss_data['lon'], 2),
+        'lat': lat,
+        'lon': lon,
         'alt': round(iss_data['alt'], 2),
         'vel_kph': iss_data['vel_kph'],
         'vel_mps': iss_data['vel_mps'],
         'pob': people_on_board.people_iss()['people'],
         'day_night': iss_data['day_night'],
+        'usr_loc': None
     }
 
     current_user = request.user.id
+
+
+
     user_lat = None
     user_lon = None
+    iss_lat = iss_data['lat']
+    iss_lon = iss_data['lon']
 
     try:
+
         location_query = Location.objects.get(user_id=current_user)
         city = location_query.city
         country = location_query.country
+
+        table_data['user_loc'] = True
 
         geolocator = Nominatim(user_agent='ISS_Now')
         g_loc = geolocator.geocode(city + ',' + country)
@@ -77,19 +98,18 @@ def map_view(request):
     except Exception as ex:
         print(ex)
 
-    m = folium.Map(location=[lat, lon], zoom_start=4)
+    m = folium.Map(location=[iss_lat, iss_lon], zoom_start=4)
 
     iss_icon = folium.features.CustomIcon('iss_app/static/images/space-station.png', icon_size=(40, 40))
-    folium.Marker((lat, lon), tooltip='ISS', popup='International Space Station', icon=iss_icon).add_to(m)
+    folium.Marker((iss_lat, iss_lon), tooltip='ISS', popup='International Space Station', icon=iss_icon).add_to(m)
 
     if user_lat and user_lon:
 
-        dist_km = round((distance.great_circle((lat, lon), (user_lat, user_lon)).km), 2)
-        print(dist_km)
+        dist_km = round((distance.great_circle((iss_lat, iss_lon), (user_lat, user_lon)).km), 2)
 
         folium.Marker((user_lat, user_lon), tooltip='Your Location').add_to(m)
 
-        folium.PolyLine(locations=[[lat, lon], [user_lat, user_lon]],
+        folium.PolyLine(locations=[[iss_lat, iss_lon], [user_lat, user_lon]],
                         color='gray',
                         dash_array='5, 10',
                         weight=3,
@@ -106,6 +126,8 @@ def map_view(request):
         'map': m._repr_html_(),
         'data': table_data
     }
+
+
 
     return render(request, 'iss_app/map.html', context)
 
@@ -140,12 +162,12 @@ def earth_cam_view(request):
     else:
         lon = f"{lon}° E"
 
-    vel_kps = round((iss_data['vel_mps'] / 1000), 3)
+    vel_kps = round((iss_data['vel_mps'] / 1000), 2)
 
     return render(request, 'iss_app/earth-cam.html', {'lat': lat,
                                                       'lon': lon,
-                                                      'vel': vel_kps,
-                                                      'alt': round(iss_data['alt'], 3)
+                                                      'vel_kps': vel_kps,
+                                                      'alt': round(iss_data['alt'], 1)
                                                       })
 
 

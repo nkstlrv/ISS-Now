@@ -43,7 +43,7 @@
 
                         <tr>
                             <th scope="row">Velocity</th>
-                            <td id="vel">{{ vel }} km/s</td>
+                            <td id="vel_kps">{{ vel_kps }} km/s</td>
                         </tr>
 
                         </tbody>
@@ -68,9 +68,10 @@ $(document).ready(function() {
   function updateTable(data) {
     var latlon = data.lat + ", " + data.lon;
     var alt = data.alt + " km"
+    var vel_kps = data.vel_kps + " km/s"
     $('#latlon').text(latlon);
     $('#alt').text(alt);
-    $('#velocity').text(velocity);
+    $('#vel_kps').text(vel_kps);
   }
 
   // Call the updateTable function with initial data
