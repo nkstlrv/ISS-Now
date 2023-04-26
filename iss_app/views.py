@@ -20,19 +20,19 @@ def home_view(request):
 
 @login_required(login_url="/auth/login/")
 def map_view(request):
-    data = iss_params.iss_data()
-    lat = float(data['lat'])
-    lon = float(data['lon'])
+    iss_data = iss_params.iss_data()
+    lat = iss_data['lat']
+    lon = iss_data['lon']
     print(lat, lon)
 
     table_data = {
-        'lat': round(data['lat'], 2),
-        'lon': round(data['lon'], 2),
-        'alt': round(data['alt'], 2),
-        'vel_kph': data['vel_kph'],
-        'vel_mps': data['vel_mps'],
+        'lat': round(iss_data['lat'], 2),
+        'lon': round(iss_data['lon'], 2),
+        'alt': round(iss_data['alt'], 2),
+        'vel_kph': iss_data['vel_kph'],
+        'vel_mps': iss_data['vel_mps'],
         'pob': people_on_board.people_iss()['people'],
-        'day_night': data['day_night'],
+        'day_night': iss_data['day_night'],
     }
 
     current_user = request.user.id
@@ -97,3 +97,20 @@ class ChangeLocationView(UpdateView):
     template_name = 'iss_app/change_location.html'
     success_url = reverse_lazy('map')
 
+
+def live_cam_view(request):
+
+    iss_data = iss_params.iss_data()
+
+    vel_kps = iss_data['vel_mps'] / 1000
+
+    data = {
+
+        'lat': iss_data['lat'],
+        'lon': iss_data['lon'],
+        'vel': round(vel_kps, 3),
+        'alt': iss_data['alt']
+
+    }
+
+    return render(request, 'iss_app/live-iss-cam.html', data)
