@@ -3,20 +3,43 @@
 {% block title %}Log in{% endblock title %}
 
 {% block content %}
-<div class="container" style="margin-left: 150px; position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);">
-    <div class="card text-white bg-dark mb-3" style="max-width: 26rem;">
-  <div class="card-header" style="text-align: center"><h3 style="color:steelblue;" class="card-title">Log in</h3></div>
-  <div class="card-body">
 
-    <form method="post">
-        {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Log in</button>
-    </form>
-  </div>
-</div>
-</div>
+    <head>
+
+        <link rel="stylesheet" href={% static 'css/login.css' %}>
+
+    </head>
+
+    <div class="main">
+
+        <div class="container">
+            <div class="card text-white bg-dark mb-3" style="max-width: 20rem;">
+                <div class="card-header"><h3 class="card-title">
+                Log In form</h3></div>
+                <div class="card-body">
+                      <form method="post">
+                    {% csrf_token %}
+
+                    {{ form.as_p }}
+
+                    <button type="submit" class="btn btn-success">Log In</button>
+                </form>
+
+                <hr>
+
+                <div style="align-items: stretch">
+                    <strong style="margin-right: 20px">No account?</strong>
+                    <a href="{% url 'register' %}"><button class="btn btn-info">Sign Up</button></a>
+                </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div>
+            <img src="{% static "images/p03clhhz.jpg" %}" alt="">
+        </div>
+
+    </div>
+
 {% endblock content %}
