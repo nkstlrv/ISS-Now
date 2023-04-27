@@ -12,12 +12,11 @@
     </head>
 
     {% if data.dist %}
-        {% if data.dist <= 600 %}
-            <div class="card bg-transparent text-white">
-                <div class="card-body" style="border-left: 4px solid green;
-            background-color: rgba(0, 255, 0, 0.1); text-align: center">
-                    <h3>International Space Station can be seen NOW at your location ! 🔥🌌🚀</h3>
-                </div>
+        {% if data.dist <= 600 and data.day_night == 'Night 🌛' %}
+            <div style=" background-color: rgba(64, 255, 25, 0.2); text-align: center; padding: 5px">
+
+                <h3 style="color: white">ISS can be seen at your location now!!!🔥🚀🌍</h3>
+
             </div>
         {% endif %}
     {% endif %}
@@ -56,12 +55,17 @@
                         </tr>
 
                         {% if data.dist %}
-
-                            <tr>
-                                <th scope="row">Distance</th>
-                                <td id="dist">{{ data.dist }} km</td>
-                            </tr>
-
+                            {% if data.dist <= 600 %}
+                                <tr>
+                                    <th scope="row">Distance</th>
+                                    <td id="dist" style="color: lawngreen">{{ data.dist }} km</td>
+                                </tr>
+                            {% else %}
+                                 <tr>
+                                    <th scope="row">Distance</th>
+                                    <td id="dist">{{ data.dist }} km</td>
+                                </tr>
+                            {% endif %}
                         {% endif %}
 
                         <tr>

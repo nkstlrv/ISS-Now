@@ -115,7 +115,7 @@ def map_view(request):
                         weight=3,
                         tooltip=f"{dist_km} km").add_to(m)
 
-        table_data['dist'] = dist_km
+        table_data['dist'] = 200
 
     else:
         print('No Marker')
@@ -126,8 +126,6 @@ def map_view(request):
         'map': m._repr_html_(),
         'data': table_data
     }
-
-
 
     return render(request, 'iss_app/map.html', context)
 
@@ -146,6 +144,7 @@ class ChangeLocationView(UpdateView):
     success_url = reverse_lazy('map')
 
 
+@login_required(login_url="/auth/login/")
 def earth_cam_view(request):
     iss_data = iss_params.iss_data()
 
@@ -171,6 +170,7 @@ def earth_cam_view(request):
                                                       })
 
 
+@login_required(login_url="/auth/login/")
 def station_cam_view(request):
     iss_data = iss_params.iss_data()
 

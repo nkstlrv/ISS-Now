@@ -3,9 +3,17 @@
 {% block title %}Register{% endblock title %}
 
 {% block content %}
-    <div class="container" style="margin-top: 20px">
+    {% load static %}
+
+    <head>
+
+        <link rel="stylesheet" href={% static 'css/register.css' %}>
+
+    </head>
+
+    <div class="container">
         <div class="card text-white bg-dark mb-3" style="max-width: 60rem;">
-            <div class="card-header" style="text-align: center"><h3 style="color:steelblue;" class="card-title">
+            <div class="card-header"><h3 class="card-title">
                 Registration form</h3></div>
             <div class="card-body">
 
@@ -17,8 +25,8 @@
                     <button type="submit" class="btn btn-success">Sign Up</button>
                 </form>
                 <hr>
-                <div style="align-items: stretch">
-                    <strong style="margin-right: 20px">Already have account?</strong>
+                <div class="stretch">
+                    <strong>Already have account?</strong>
                     <a href="{% url 'login' %}"><button class="btn btn-info">Log In</button></a>
                 </div>
             </div>

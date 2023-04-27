@@ -1,0 +1,19 @@
+.container {
+    margin-top: 20px;
+}
+
+.card-header {
+    text-align: center;
+}
+
+h3 {
+    color: steelblue;
+}
+
+.stretch {
+    align-items: stretch;
+}
+
+strong {
+    margin-right: 20px;
+}

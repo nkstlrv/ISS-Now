@@ -1,36 +1,17 @@
-
-body {
-    padding-bottom: 20px;
+.card {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
 }
 
 .main {
-
-    margin: auto;
-    width: 82%;
-    padding: 10px;
-
-
+  padding: 40px;
 }
 
-img {
-    border-radius: 10px;
-    width: 100%;
-    height: auto;
-}
-
-.container {
-
-    margin: auto;
-    width: 100%;
-    border-color: green;
-    padding: 30px;
-    position: absolute;
+h3 {
+  color:steelblue
 }
 
 .card-header {
-    text-align: center;
-}
-
-.card-title {
-    color: steelblue;
+  text-align: center;
 }
