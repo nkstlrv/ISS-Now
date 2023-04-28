@@ -194,3 +194,29 @@ def station_cam_view(request):
                                                         'vel': vel_kps,
                                                         'alt': round(iss_data['alt'], 3)
                                                         })
+
+
+@login_required(login_url="/auth/login/")
+def nasa_tv_view(request):
+    iss_data = iss_params.iss_data()
+
+    lat = round(iss_data['lat'], 3)
+    lon = round(iss_data['lon'], 3)
+
+    if lat < 0:
+        lat = f"{lat}° S"
+    else:
+        lat = f"{lat}° N"
+
+    if lon < 0:
+        lon = f"{lon}° W"
+    else:
+        lon = f"{lon}° E"
+
+    vel_kps = round((iss_data['vel_mps'] / 1000), 3)
+
+    return render(request, 'iss_app/nasa_tv.html', {'lat': lat,
+                                                        'lon': lon,
+                                                        'vel': vel_kps,
+                                                        'alt': round(iss_data['alt'], 3)
+                                                        })

@@ -20,7 +20,11 @@ img {
 .greeting-fn {
     margin-right: 100px;
     color: lightgray;
-    font-family: "Comic Sans MS", serif;
+}
+
+#gr {
+    color: steelblue;
+    font-family: Arial;
 }
 
 .btn {
