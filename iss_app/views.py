@@ -115,7 +115,7 @@ def map_view(request):
                         weight=3,
                         tooltip=f"{dist_km} km").add_to(m)
 
-        table_data['dist'] = 200
+        table_data['dist'] = dist_km
 
     else:
         print('No Marker')

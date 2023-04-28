@@ -1,0 +1,30 @@
+.d-flex {
+    margin: 10px;
+}
+
+.video-div {
+    position: relative;
+    padding-bottom: 102%;
+    padding-right: 90%;
+    padding-left: 90%;
+    height: 0;
+    overflow: hidden
+}
+
+.frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    resize: both;
+}
+
+.card-div {
+    align-items: center;
+}
+
+#card-body {
+    max-width: 24rem;
+    margin-right: 60px;
+}
