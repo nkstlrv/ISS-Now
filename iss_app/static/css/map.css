@@ -1,46 +1,84 @@
 .main-div {
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-top: 30px;
-  padding-bottom: 300px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 30px;
+    padding-bottom: 300px;
 
 }
 
 .flex-container {
-  display: flex;
+    display: flex;
 }
 
 .map {
-  flex: 0.7;
-  width: 550px;
-  margin-bottom: 20px;
-  margin-right: 40px;
-  margin-left: 40px;
+    flex: 0.7;
+    width: 550px;
+    margin-bottom: 20px;
+    margin-right: 40px;
+    margin-left: 40px;
 
 
 }
 
 .card {
-  flex: 0.6;
-  width: 150px;
-  margin-left: 20px;
-  background-color: lightgray;
-  max-width: 150px;
+    flex: 0.6;
+    width: 150px;
+    margin-left: 20px;
+    background-color: lightgray;
+    max-width: 150px;
 }
 
 #map-object {
-  height: 200px;
+    height: 200px;
 }
 
 .card-header {
-  text-align: center;
-  color: steelblue;
+    text-align: center;
+    color: steelblue;
 }
 
 h6 {
-  color: steelblue;
+    color: steelblue;
 }
 
 .location {
-  text-align: center;
+    text-align: center;
 }
+
+.iss-alert-div {
+    background-color: rgba(64, 255, 25, 0.2);
+    text-align: center;
+    padding: 5px;
+}
+
+.iss-alert-text {
+    color: white;
+}
+
+#notify-on-flyovers-h {
+    text-align: center;
+}
+
+#notify-on-flyovers-div {
+    margin-top: 2px;
+}
+
+#notify-btn-mail {
+    margin-right: 10px;
+}
+
+a {
+    text-decoration: none;
+}
+
+#btn-set-loc {
+    margin-right: 10px;
+}
+
+
+
+
+
+
+
+

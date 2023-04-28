@@ -13,9 +13,9 @@
 
     {% if data.dist %}
         {% if data.dist <= 600 and data.day_night == 'Night 🌛' %}
-            <div style=" background-color: rgba(64, 255, 25, 0.2); text-align: center; padding: 5px">
+            <div class="iss-alert-div">
 
-                <h3 style="color: white">ISS can be seen at your location now!!!🔥🚀🌍</h3>
+                <h3 class="iss-alert-text">ISS can be seen at your location now!!!🔥🚀🌍</h3>
 
             </div>
         {% endif %}
@@ -40,7 +40,7 @@
 
                         <tr>
                             <th scope="row">Coordinates</th>
-                            <td id="latlon">{{ data.lat }}, {{ data.lon }}</td>
+                            <td id="latlon">{{ data.lat }}<br> {{ data.lon }}</td>
                         </tr>
 
 
@@ -81,10 +81,10 @@
                         </tbody>
                     </table>
 
-                    <div style="text-align: center">
+                    <div id="notify-on-flyovers-h">
                         <h6>Notify on flyovers</h6>
-                        <div style="margin-top: 2px">
-                            <button type="button" class="btn btn-outline-light" style="margin-right: 10px">
+                        <div id="notify-on-flyovers-div">
+                            <button type="button" class="btn btn-outline-light" id="notify-btn-mail">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                      fill="currentColor"
                                      class="bi bi-envelope" viewBox="0 0 16 16">
@@ -117,8 +117,8 @@
                                     </button>
                                 </a>
                             {% else %}
-                                <a href="{% url 'set-location' %}" style="text-decoration: none">
-                                    <button type="button" class="btn btn-success" style="margin-right: 10px">
+                                <a href="{% url 'set-location' %}">
+                                    <button id="btn-set-loc" type="button" class="btn btn-success">
                                         Set Location
                                     </button>
                                 </a>
