@@ -1,21 +1,26 @@
 {% extends 'iss_app/base.html' %}
 {% load static %}
-{% block title %}Set location{% endblock title %}
+{% block title %}Set Location{% endblock title %}
 
 {% block content %}
-    <div class="container" style="margin-left: 150px; position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);">
-        <div class="card text-white bg-dark mb-3" style="max-width: 26rem;">
-            <div class="card-header" style="text-align: center"><h3 style="color:steelblue;" class="card-title">Set Location</h3></div>
+
+    <head>
+
+        <link rel="stylesheet" href={% static 'css/login.css' %}>
+
+    </head>
+    <div class="main">
+        <div class="card text-white bg-dark mb-3" style="max-width: 23rem;">
+            <div class="card-header"><h3 class="card-title">
+                Set Location</h3></div>
             <div class="card-body">
 
                 <form method="post">
-
                     {% csrf_token %}
+
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-success">Show marker</button>
+
+                    <button type="submit" class="btn btn-success">Submit</button>
                 </form>
                 <script>
 
@@ -26,4 +31,6 @@
             </div>
         </div>
     </div>
+
+
 {% endblock content %}
