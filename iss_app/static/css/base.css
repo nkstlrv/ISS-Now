@@ -1,0 +1,28 @@
+
+.navbar-brand {
+    font-family: 'Nasa';
+    font-size: xx-large;
+    background: linear-gradient(to right, lightsteelblue, steelblue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;)
+}
+
+img {
+    width: 45px;
+    height: 45px;
+    margin-right: 10px
+}
+
+#github {
+    margin-right: 15px;
+}
+
+.greeting-fn {
+    margin-right: 100px;
+    color: lightgray;
+    font-family: "Comic Sans MS", serif;
+}
+
+.btn {
+    margin-right: 15px;
+}
