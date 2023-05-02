@@ -9,8 +9,8 @@ from geopy import distance
 from geopy.geocoders import Nominatim
 
 from calculations.iss import iss_params, people_on_board
-from .forms import LocationForm
-from .models import Location
+from .forms import LocationForm, NotifyForm
+from .models import Location, Notify
 
 
 def home_view(request):
@@ -217,5 +217,12 @@ def nasa_tv_view(request):
                                                     'vel': vel_kps,
                                                     'alt': round(iss_data['alt'], 3)
                                                     })
+
+
+class NotifyView(CreateView):
+    model = Notify
+    form_class = NotifyForm
+    template_name = 'iss_app/notify.html'
+    success_url = reverse_lazy('map')
 
 

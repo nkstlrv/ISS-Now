@@ -1,15 +1,8 @@
-from django.urls import path
-from .views import home_view, \
-    map_view, \
-    SetLocationView, \
-    ChangeLocationView, \
-    earth_cam_view, \
-    data_view, \
-    station_cam_view, \
-    nasa_tv_view
-
-
 from django.contrib.auth.decorators import login_required
+from django.urls import path
+
+from .views import home_view, map_view, SetLocationView, ChangeLocationView, earth_cam_view, data_view, \
+    station_cam_view, nasa_tv_view, NotifyView
 
 urlpatterns = [
 
@@ -21,4 +14,5 @@ urlpatterns = [
     path("station-cam/", login_required(station_cam_view), name='station-view'),
     path("nasa-tv/", login_required(nasa_tv_view), name='nasa-tv'),
     path("data-view/", data_view, name='data-view'),
+    path("notify/", login_required(NotifyView.as_view()), name='notify'),
 ]

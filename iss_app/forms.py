@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Location
+from .models import Location, Notify
 
 
 class LocationForm(forms.ModelForm):
@@ -16,4 +16,11 @@ class LocationForm(forms.ModelForm):
         }
 
 
+class NotifyForm(forms.ModelForm):
+    class Meta:
+        model = Notify
+        fields = ('user',)
 
+        widgets = {
+            'user': forms.TextInput(attrs={'class': 'form-control', 'value': '', 'id': 'user_id', 'type': 'hidden'}),
+        }
