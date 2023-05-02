@@ -23,3 +23,4 @@ class RegisterForm(UserCreationForm):
         self.fields['password1'].widget.attrs['class'] = 'form-control'
         self.fields['password1'].widget.attrs['placeholder'] = 'super_secret_password'
         self.fields['password2'].widget.attrs['class'] = 'form-control'
+

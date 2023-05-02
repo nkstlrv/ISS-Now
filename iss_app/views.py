@@ -1,17 +1,16 @@
-import requests
+import folium
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.generic import CreateView, UpdateView
 from django.urls import reverse_lazy
-import folium
+from django.views.generic import CreateView, UpdateView
 from folium import plugins
-from django.contrib.auth.decorators import login_required
+from geopy import distance
+from geopy.geocoders import Nominatim
 
 from calculations.iss import iss_params, people_on_board
 from .forms import LocationForm
 from .models import Location
-from geopy.geocoders import Nominatim
-from geopy import distance
 
 
 def home_view(request):
@@ -75,8 +74,6 @@ def map_view(request):
     }
 
     current_user = request.user.id
-
-
 
     user_lat = None
     user_lon = None
@@ -216,7 +213,9 @@ def nasa_tv_view(request):
     vel_kps = round((iss_data['vel_mps'] / 1000), 3)
 
     return render(request, 'iss_app/nasa_tv.html', {'lat': lat,
-                                                        'lon': lon,
-                                                        'vel': vel_kps,
-                                                        'alt': round(iss_data['alt'], 3)
-                                                        })
+                                                    'lon': lon,
+                                                    'vel': vel_kps,
+                                                    'alt': round(iss_data['alt'], 3)
+                                                    })
+
+

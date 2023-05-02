@@ -1,5 +1,6 @@
-from .models import Location
 from django import forms
+
+from .models import Location
 
 
 class LocationForm(forms.ModelForm):
@@ -13,3 +14,6 @@ class LocationForm(forms.ModelForm):
             'city': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter City'}),
             'country': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Country'}),
         }
+
+
+

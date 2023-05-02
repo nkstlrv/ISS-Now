@@ -8,6 +8,7 @@ from .views import home_view, \
     station_cam_view, \
     nasa_tv_view
 
+
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
