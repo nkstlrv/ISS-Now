@@ -83,8 +83,20 @@
 
                     <div id="notify-on-flyovers-h">
                         <div id="notify-on-flyovers-div">
-                            <a href="{% url 'notify' %}"><button class="btn btn-info">Notify on Flyovers</button></a>
 
+                            {% if data.notify %}
+
+                                <a href="{% url 'del-notify' data.notify.id %}">
+                                    <button class="btn btn-outline-danger">Turn off Notifications</button>
+                                </a>
+
+                            {% else %}
+
+                                <a href="{% url 'notify' %}">
+                                    <button class="btn btn-info">Notify on Flyovers</button>
+                                </a>
+
+                            {% endif %}
 
                         </div>
                     </div>

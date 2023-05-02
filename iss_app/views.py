@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from folium import plugins
 from geopy import distance
 from geopy.geocoders import Nominatim
@@ -70,7 +70,8 @@ def map_view(request):
         'vel_mps': iss_data['vel_mps'],
         'pob': people_on_board.people_iss()['people'],
         'day_night': iss_data['day_night'],
-        'usr_loc': None
+        'usr_loc': None,
+        'notify': None
     }
 
     current_user = request.user.id
@@ -79,6 +80,14 @@ def map_view(request):
     user_lon = None
     iss_lat = iss_data['lat']
     iss_lon = iss_data['lon']
+
+    try:
+
+        notification_query = Notify.objects.get(user_id=current_user)
+        table_data['notify'] = notification_query
+
+    except Exception as e:
+        print(e)
 
     try:
 
@@ -226,3 +235,7 @@ class NotifyView(CreateView):
     success_url = reverse_lazy('map')
 
 
+class DelNotifyView(DeleteView):
+    model = Notify
+    template_name = 'iss_app/del-notify.html'
+    success_url = reverse_lazy('map')

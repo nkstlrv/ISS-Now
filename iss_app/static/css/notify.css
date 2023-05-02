@@ -1,0 +1,24 @@
+.card {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+
+}
+
+.card-body {
+    text-align: center;
+}
+
+
+
+.main {
+  padding: 40px;
+}
+
+h3 {
+  color:steelblue
+}
+
+.card-header {
+  text-align: center;
+}
