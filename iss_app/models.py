@@ -6,6 +6,8 @@ class Location(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='location')
     city = models.CharField(blank=False, null=False, max_length=200)
     country = models.CharField(blank=False, null=False, max_length=200)
+    lat = models.FloatField(default=None, null=True)
+    lon = models.FloatField(default=None, null=True)
 
     def __str__(self):
         return f"{self.user.username} | {self.city} | {self.country}"
