@@ -16,7 +16,7 @@ class Location(models.Model):
 class Notify(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='notify')
     do_notify = models.BooleanField(default=True)
-    last_notified = models.IntegerField(default=None, null=True)
+    last_notified = models.IntegerField(default=0, null=True)
 
     def __str__(self):
         return f"{self.user.username} | {self.do_notify}"

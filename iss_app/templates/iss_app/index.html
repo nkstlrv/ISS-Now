@@ -1,7 +1,32 @@
 {% extends 'iss_app/base.html' %}
 
-{% block title %}{% endblock title %}
+{% block title %}Home{% endblock title %}
 
 {% block content %}
+    {% load static %}
+    <head>
+        <link rel="stylesheet" href={% static 'css/index.css' %}>
+    </head>
+    <div class="main">
 
+   <div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-6">
+      <img src="{% static "images/iss_photo.jpg" %}" class="img-fluid h-100 object-fit-cover">
+    </div>
+    <div class="col-lg-6 bg-dark text-light p-4 d-flex flex-column justify-content-center">
+      <h2>Card Title</h2>
+      <p>Card Text</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
+    </div>
 {% endblock content %}

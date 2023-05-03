@@ -94,12 +94,25 @@ def map_view(request):
         location_query = Location.objects.get(user_id=current_user)
         city = location_query.city
         country = location_query.country
+        lat = location_query.lat
+        lon = location_query.lon
 
         table_data['user_loc'] = True
 
         geolocator = Nominatim(user_agent='ISS_Now')
         g_loc = geolocator.geocode(city + ',' + country)
-        user_lat, user_lon = (g_loc.latitude, g_loc.longitude)
+
+        if g_loc:
+            user_lat, user_lon = (g_loc.latitude, g_loc.longitude)
+
+            location_query.lat = user_lat
+            location_query.lon = user_lon
+            location_query.save()
+
+        else:
+            location_query.lat = user_lat
+            location_query.lon = user_lon
+            location_query.save()
 
     except Exception as ex:
         print(ex)
