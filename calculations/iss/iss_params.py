@@ -27,6 +27,7 @@ def iss_data():
         'vel_kph': int(req["velocity"]),
         'vel_mps': round((int(req["velocity"]) / 3.6), 2),
         'vis': req['visibility'],
+        # 'vis': 'eclipsed',
         'day_night': iss_daytime['value']
 
     }

@@ -9,6 +9,7 @@ from geopy import distance
 from geopy.geocoders import Nominatim
 
 from calculations.iss import iss_params, people_on_board
+from calculations import distance_geocoder
 from .forms import LocationForm, NotifyForm
 from .models import Location, Notify
 
@@ -94,8 +95,6 @@ def map_view(request):
         location_query = Location.objects.get(user_id=current_user)
         city = location_query.city
         country = location_query.country
-        lat = location_query.lat
-        lon = location_query.lon
 
         table_data['user_loc'] = True
 
@@ -124,7 +123,7 @@ def map_view(request):
 
     if user_lat and user_lon:
 
-        dist_km = round((distance.great_circle((iss_lat, iss_lon), (user_lat, user_lon)).km), 2)
+        dist_km = distance_geocoder.get_distance((iss_lat, iss_lon), (user_lat, user_lon))
 
         folium.Marker((user_lat, user_lon), tooltip='Your Location').add_to(m)
 

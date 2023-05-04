@@ -5,7 +5,7 @@ from background_tasks.jobs import loc
 
 def check_loc():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(loc, 'interval', seconds=10)
+    scheduler.add_job(loc, 'interval', seconds=60)
     scheduler.start()
 
 
