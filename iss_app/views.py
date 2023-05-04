@@ -162,21 +162,19 @@ class RemoveMarker(DeleteView, LoginRequiredMixin):
     template_name = 'iss_app/del-location.html'
     success_url = reverse_lazy('map')
 
-    def delete(self, request, *args, **kwargs):
-        self.model = self.get_object()
+    def form_valid(self, form):
+
+        success_url = self.get_success_url()
+        # self.object.delete()
 
         try:
-            notify_obj = Notify.objects.get(user=self.model.user_id)
-            print(notify_obj)
-        except Notify.DoesNotExist:
-            notify_obj = None
+            notify_to_del = Notify.objects.get(user_id=self.object.user_id)
+            notify_to_del.delete()
+            print(notify_to_del)
+        except Exception as e:
+            print(e)
 
-        self.object.delete()
-
-        if notify_obj:
-            notify_obj.delete()
-
-        return HttpResponseRedirect(self.success_url)
+        return super(RemoveMarker, self).form_valid(form)
 
 
 @login_required(login_url="/auth/login/")
