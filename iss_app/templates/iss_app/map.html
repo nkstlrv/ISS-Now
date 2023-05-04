@@ -111,7 +111,7 @@
 
                             {% if data.user_loc %}
 
-                                <a href="{% url 'change-location' user.pk %}">
+                                <a href="{% url 'change-location' data.loc_id %}">
                                     <button type="button" class="btn btn-success">
                                         Change Location
                                     </button>

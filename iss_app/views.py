@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from folium import plugins
 from geopy import distance
 from geopy.geocoders import Nominatim
@@ -14,7 +15,7 @@ from .forms import LocationForm, NotifyForm
 from .models import Location, Notify
 
 
-def home_view(request):
+def start_view(request):
     return render(request, "iss_app/index.html")
 
 
@@ -46,7 +47,7 @@ def data_view(request):
                          })
 
 
-@login_required(login_url="/auth/login/")
+@login_required(login_url="start/")
 def map_view(request):
     iss_data = iss_params.iss_data()
 
@@ -72,6 +73,7 @@ def map_view(request):
         'pob': people_on_board.people_iss()['people'],
         'day_night': iss_data['day_night'],
         'usr_loc': None,
+        'loc_id': None,
         'notify': None
     }
 
@@ -93,6 +95,7 @@ def map_view(request):
     try:
 
         location_query = Location.objects.get(user_id=current_user)
+        table_data['loc_id'] = location_query.pk
         city = location_query.city
         country = location_query.country
 
@@ -148,14 +151,14 @@ def map_view(request):
     return render(request, 'iss_app/map.html', context)
 
 
-class SetLocationView(CreateView):
+class SetLocationView(CreateView, LoginRequiredMixin):
     form_class = LocationForm
     model = Location
     template_name = 'iss_app/location_set.html'
     success_url = reverse_lazy('map')
 
 
-class ChangeLocationView(UpdateView):
+class ChangeLocationView(UpdateView, LoginRequiredMixin):
     model = Location
     fields = ('city', 'country')
     template_name = 'iss_app/change_location.html'
@@ -240,14 +243,14 @@ def nasa_tv_view(request):
                                                     })
 
 
-class NotifyView(CreateView):
+class NotifyView(CreateView, LoginRequiredMixin):
     model = Notify
     form_class = NotifyForm
     template_name = 'iss_app/notify.html'
     success_url = reverse_lazy('map')
 
 
-class DelNotifyView(DeleteView):
+class DelNotifyView(DeleteView, LoginRequiredMixin):
     model = Notify
     template_name = 'iss_app/del-notify.html'
     success_url = reverse_lazy('map')
