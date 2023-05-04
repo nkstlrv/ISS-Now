@@ -1,16 +1,15 @@
 import folium
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import CreateView, DeleteView
 from folium import plugins
-from geopy import distance
 from geopy.geocoders import Nominatim
 
-from calculations.iss import iss_params, people_on_board
 from calculations import distance_geocoder
+from calculations.iss import iss_params, people_on_board
 from .forms import LocationForm, NotifyForm
 from .models import Location, Notify
 
@@ -158,11 +157,26 @@ class SetLocationView(CreateView, LoginRequiredMixin):
     success_url = reverse_lazy('map')
 
 
-class ChangeLocationView(UpdateView, LoginRequiredMixin):
+class RemoveMarker(DeleteView, LoginRequiredMixin):
     model = Location
-    fields = ('city', 'country')
-    template_name = 'iss_app/change_location.html'
+    template_name = 'iss_app/del-location.html'
     success_url = reverse_lazy('map')
+
+    def delete(self, request, *args, **kwargs):
+        self.model = self.get_object()
+
+        try:
+            notify_obj = Notify.objects.get(user=self.model.user_id)
+            print(notify_obj)
+        except Notify.DoesNotExist:
+            notify_obj = None
+
+        self.object.delete()
+
+        if notify_obj:
+            notify_obj.delete()
+
+        return HttpResponseRedirect(self.success_url)
 
 
 @login_required(login_url="/auth/login/")

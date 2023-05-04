@@ -90,20 +90,20 @@
                                     <a href="{% url 'del-notify' data.notify.id %}">
                                         <button class="btn btn-outline-danger">Turn off Notifications</button>
                                     </a>
+                                    <hr>
 
                                 {% else %}
 
                                     <a href="{% url 'notify' %}">
                                         <button class="btn btn-info">Notify on Flyovers</button>
                                     </a>
-
+                                    <hr>
                                 {% endif %}
                             {% endif %}
 
                         </div>
                     </div>
 
-                    <hr>
 
                     <div>
 
@@ -111,14 +111,14 @@
 
                             {% if data.user_loc %}
 
-                                <a href="{% url 'change-location' data.loc_id %}">
-                                    <button type="button" class="btn btn-success">
-                                        Change Location
+                                <a href="{% url 'remove-marker' data.loc_id %}">
+                                    <button type="button" class="btn btn-outline-danger">
+                                        Remove Marker
                                     </button>
                                 </a>
                             {% else %}
                                 <a href="{% url 'set-location' %}">
-                                    <button id="btn-set-loc" type="button" class="btn btn-success">
+                                    <button id="btn-set-loc" type="button" class="btn btn-info">
                                         Set Location
                                     </button>
                                 </a>
