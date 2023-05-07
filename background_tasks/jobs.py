@@ -31,7 +31,7 @@ def loc():
                     user_coordinates = (u.user.location.lat, u.user.location.lon)
                     dist = get_distance(user_coordinates, iss_coordinates)
 
-                    if dist <= 600 and 'ecl' in data['vis']:
+                    if dist <= 200 and 'ecl' in data['vis']:
 
                         u.last_notified = timestamp_now
                         u.save()
